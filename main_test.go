@@ -43,6 +43,18 @@ func getValPlus1(val int) int {
 	return val + 1
 }
 
+func BenchmarkReuseResult(b *testing.B) {
+	var value int
+	for i := 0; i < b.N; i++ {
+		value = getValPlus1(i)
+		_ = value + 1
+		_ = value + 2
+		_ = value + 3
+	}
+	_ = value
+	// fmt.Printf("Value: %d\n", value)
+}
+
 func BenchmarkFuncCallSamePkg(b *testing.B) {
 	var value int
 	for i := 0; i < b.N; i++ {
