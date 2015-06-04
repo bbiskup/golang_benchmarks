@@ -26,6 +26,10 @@ type SI interface {
 	getValMethod(value int) int
 }
 
+type S2 struct {
+	S
+}
+
 func BenchmarkAddLoop(b *testing.B) {
 	var value int
 	for i := 0; i < b.N; i++ {
@@ -74,6 +78,30 @@ func BenchmarkInterfaceMethodSamePkg(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		value = si.getValMethod(value)
+	}
+	_ = value
+	// fmt.Printf("Value: %d\n", value)
+}
+
+// Should take twice as long as long as method call
+// on struct due to indirection (see above)
+func BenchmarkStructMethodSamePkgViaEmbeddedImplicit(b *testing.B) {
+	s2 := &S2{}
+	var value int
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		value = s2.getValMethod(value)
+	}
+	_ = value
+	// fmt.Printf("Value: %d\n", value)
+}
+
+func BenchmarkStructMethodSamePkgViaEmbeddedExplicit(b *testing.B) {
+	s2 := &S2{}
+	var value int
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		value = s2.S.getValMethod(value)
 	}
 	_ = value
 	// fmt.Printf("Value: %d\n", value)
