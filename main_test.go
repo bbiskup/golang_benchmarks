@@ -207,6 +207,23 @@ func BenchmarkMapLookup_1000_last(b *testing.B) {
 	}
 }
 
+func BenchmarkMapIteration(b *testing.B) {
+	m := map[string]int{}
+
+	for i := 0; i < 1000; i++ {
+		m[strconv.FormatInt(int64(i), 10)] = i
+	}
+
+	b.ResetTimer()
+	var sum int
+	for i := 0; i < b.N; i++ {
+		for _, v := range m {
+			sum += v
+		}
+		_ = sum
+	}
+}
+
 type StrIntItem struct {
 	key string
 	val int
