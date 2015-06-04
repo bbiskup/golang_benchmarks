@@ -22,6 +22,10 @@ func BenchmarkEmpty(b *testing.B) {
 	}
 }
 
+type SI interface {
+	getValMethod(value int) int
+}
+
 func BenchmarkAddLoop(b *testing.B) {
 	var value int
 	for i := 0; i < b.N; i++ {
@@ -53,12 +57,23 @@ func BenchmarkFuncCallByVar(b *testing.B) {
 	_ = value
 }
 
-func BenchmarkMethodSamePkg(b *testing.B) {
+func BenchmarkStructMethodSamePkg(b *testing.B) {
 	s := &S{}
 	var value int
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		value = s.getValMethod(value)
+	}
+	_ = value
+	// fmt.Printf("Value: %d\n", value)
+}
+
+func BenchmarkInterfaceMethodSamePkg(b *testing.B) {
+	var si SI = &S{}
+	var value int
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		value = si.getValMethod(value)
 	}
 	_ = value
 	// fmt.Printf("Value: %d\n", value)
