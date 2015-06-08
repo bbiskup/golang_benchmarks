@@ -280,6 +280,31 @@ func BenchmarkConstructEmptyStruct(b *testing.B) {
 	}
 }
 
+func BenchmarkConstructArrayWithNew(b *testing.B) {
+	var arr *[]string
+	for i := 0; i < b.N; i++ {
+		arr = new([]string)
+		_ = arr
+	}
+}
+
+func BenchmarkConstructArrayWithMake(b *testing.B) {
+	var arr []string
+	for i := 0; i < b.N; i++ {
+		arr = make([]string, 1)
+		_ = arr
+	}
+}
+
+func BenchmarkConstructArrayWithInitializer(b *testing.B) {
+	var arr []string
+	s := ""
+	for i := 0; i < b.N; i++ {
+		arr = []string{s}
+		_ = arr
+	}
+}
+
 type Struct2 struct {
 	name  string
 	code1 int
