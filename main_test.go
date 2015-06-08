@@ -159,6 +159,34 @@ func BenchmarkInlineClosureCall(b *testing.B) {
 	// fmt.Printf("Value: %d\n", value)
 }
 
+type StrStruct struct {
+	s string
+}
+
+func funStructByVal(s StrStruct) uint8 {
+	return s.s[0]
+}
+
+func funStructByRef(s *StrStruct) uint8 {
+	return s.s[0]
+}
+
+func BenchmarkCallFuncWithStructByValue(b *testing.B) {
+	s := StrStruct{strings.Repeat("x", 100000)}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = funStructByVal(s)
+	}
+}
+
+func BenchmarkCallFuncWithStructByRef(b *testing.B) {
+	s := StrStruct{strings.Repeat("x", 100000)}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = funStructByRef(&s)
+	}
+}
+
 func BenchmarkInsertIntoMap_intkey_newkey(b *testing.B) {
 	m := map[int]int{}
 	for i := 0; i < b.N; i++ {
