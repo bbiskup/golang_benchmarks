@@ -560,3 +560,29 @@ func BenchmarkBytesBufString(b *testing.B) {
 		_ = s
 	}
 }
+
+func BenchmarkConstructArray10000WithSize(b *testing.B) {
+	const length = 10000
+	arr := make([]string, length)
+	s := ""
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < length; j++ {
+			arr = append(arr, s)
+			_ = s
+		}
+	}
+}
+
+func BenchmarkConstructArray10000WithoutSize(b *testing.B) {
+	const length = 10000
+	arr := make([]string, 0)
+	s := ""
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < length; j++ {
+			arr = append(arr, s)
+			_ = s
+		}
+	}
+}
