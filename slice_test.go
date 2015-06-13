@@ -88,7 +88,7 @@ func BenchmarkConstructSliceWithInitializer(b *testing.B) {
 
 func BenchmarkConstructSlice10000WithSize(b *testing.B) {
 	const length = 10000
-	arr := make([]string, length)
+	arr := make([]string, 0, length)
 	s := ""
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
