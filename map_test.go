@@ -8,6 +8,29 @@ import (
 
 func BenchmarkInsertIntoMap_intkey_newkey(b *testing.B) {
 	m := map[int]int{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		m[i] = i
+	}
+	// fmt.Printf("Length of map: %d\n", len(m))
+}
+
+func BenchmarkInsertIntoMap_intkey_singlekey_prealloc(b *testing.B) {
+	m := make(map[int]int, b.N)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		m[i] = i
+	}
+	// fmt.Printf("Length of map: %d\n", len(m))
+}
+
+func BenchmarkInsertIntoMap_intkey_singlekey_prealloc_prepolutated(b *testing.B) {
+	m := make(map[int]int, b.N)
+	for i := 0; i < b.N; i++ {
+		m[i] = i
+	}
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		m[i] = i
 	}
@@ -16,6 +39,7 @@ func BenchmarkInsertIntoMap_intkey_newkey(b *testing.B) {
 
 func BenchmarkInsertIntoMap_intkey_singlekey(b *testing.B) {
 	m := map[int]int{}
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		m[0] = i
 	}
@@ -24,6 +48,7 @@ func BenchmarkInsertIntoMap_intkey_singlekey(b *testing.B) {
 
 func BenchmarkInsertIntoMap_stringkey_singlekey(b *testing.B) {
 	m := map[string]int{}
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		m["key"] = i
 	}
